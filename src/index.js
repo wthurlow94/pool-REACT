@@ -15,37 +15,77 @@ import {
 
 
 
-function Signup(props){
+class Signup extends React.Component {
+    constructor(props) {
+	super(props);
+	this.state = {
+           email: '',
+	   password: ''
+        }
+	this.handleClick = this.handleClick.bind(this);
+	this.handlePasswordChange = this.handlePasswordChange.bind(this);
+	this.handleemailChange = this.handleemailChange.bind(this);
+    }
+    handlePasswordChange(event) {
+        this.setState({password: event.target.value});
+    }
 
-	return(
-<Container>
-  <Row />
-  <Row className="justify-content-md-center">
-	<Col>
-	   <Form>
-  <Form.Group controlId="formBasicEmail">
-    <Form.Label>Email address</Form.Label>
-    <Form.Control type="email" placeholder="Enter email" />
-  </Form.Group>
+    handleemailChange(event) {
+        this.setState({email: event.target.value});
+    }
 
-  <Form.Group controlId="formBasicPassword">
-    <Form.Label>Password</Form.Label>
-    <Form.Control type="password" placeholder="Password" />
-  </Form.Group>
-  <Form.Group controlId="formSubmitBtn" className="text-center">		
-  <Button variant="primary" type="submit">
-    Submit
-  </Button>
-  </Form.Group>
-</Form>
-		</Col>
-</Row>
-</Container>
-	);
+	
+	handleClick() {
+
+	let data = {email: this.state.email, password:this.state.password};
+
+		console.log(data);
+        fetch('http://localhost:9000/users', {
+	    method: 'POST',
+	    headers: {
+	        'Content-Type': 'application/json'
+	    },
+	    body: JSON.stringify(data),
+	})
+        .then(response => response.json())
+        .then(data => console.log(data));	
+	
+	
+	
+	};
+render(){
+	return (
+    <Container>
+        <Row />
+        <Row className="justify-content-md-center">
+	        <Col>
+	            <Form>
+                    <Form.Group controlId="formBasicEmail">
+                        <Form.Label>Email address</Form.Label>
+                        <Form.Control type="email" placeholder="Enter email" 
+		        onChange={this.handleemailChange}/>
+                    </Form.Group>
+                    <Form.Group controlId="formBasicPassword">
+                        <Form.Label>Password</Form.Label>
+                        <Form.Control type="password" placeholder="Password" 
+		            value={this.state.value} 
+		            onChange={this.handlePasswordChange}/>
+                    </Form.Group>
+                    <Form.Group controlId="formSubmitBtn" className="text-center">		
+                        <Button variant="primary" type="submit" onClick={this.handleClick}>
+                            Submit
+                        </Button>
+                    </Form.Group>
+                </Form>
+            </Col>
+        </Row>
+</Container>);
+}
 
 }
 
 class App extends React.Component {
+
 	render() {
 	   return (
 		   <div>
